@@ -1,4 +1,4 @@
-use actix_web::{post, get, web::{self, Json}, App, HttpServer, Result, Responder, middleware};
+use actix_web::{post, get, web::{self, Query}, App, HttpServer, Result, Responder, middleware};
 use serde::{Deserialize, Serialize};
 
 #[derive(Deserialize)]
@@ -8,7 +8,7 @@ struct Greeting {
 
 // curl -s "127.0.0.1:8080/greeting?name=General%20Kenobi"
 #[get("/greeting")]
-async fn greet_query(greeting: web::Query<Greeting>) -> String {
+async fn greet_query(greeting: Query<Greeting>) -> String {
     format!("Hello there, {}!\n", greeting.name)
 }
 

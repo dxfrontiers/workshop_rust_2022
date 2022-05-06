@@ -86,7 +86,7 @@ fn insert_person_query(conn: Connection, person: NewPerson) -> Result<Person, ru
             println!("{} rows were updated", updated);
             let id = conn.last_insert_rowid();
             get_person_by_id_query(conn,id as u32)?
-            .ok_or(rusqlite::Error::QueryReturnedNoRows)
+                .ok_or(rusqlite::Error::QueryReturnedNoRows)
         },
         Err(err) => {
             println!("update failed: {}", err);
