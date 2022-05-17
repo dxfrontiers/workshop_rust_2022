@@ -1,6 +1,6 @@
 use std::{sync::{atomic::AtomicU32, Arc}, collections::HashMap};
 
-use actix_web::{get, web::{self, Json}, App, HttpServer,error, middleware, Responder,  Result as WebResult};
+use actix_web::{get, web::{self, Json}, App, HttpServer,error, middleware, Responder,  Result as WebResult, HttpResponse};
 use serde::{Deserialize, Serialize};
 
 pub struct PersonDB{
@@ -41,13 +41,15 @@ async fn get_person_by_id(data: web::Data<PersonDB>, path: web::Path<PathInfo>) 
         .map(Json)
 }
 
-
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     env_logger::init_from_env(env_logger::Env::new().default_filter_or("info"));
+
+    let person_db = web::Data::new(init_person_db());
+
     HttpServer::new(move || {
         App::new()
-        .app_data(web::Data::new(init_person_db()))
+        .app_data(person_db.clone())
         .wrap(middleware::Logger::default())
         .service(get_person_by_id)
     })
