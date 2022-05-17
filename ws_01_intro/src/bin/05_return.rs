@@ -73,7 +73,6 @@ async fn get_person_by_id_06(path: web::Path<PathInfo>) -> WebResult<impl Respon
         .map(serde_json::to_string)        
 }
 
-
 // TODO: aufgabe
 #[get("/person/")]
 async fn get_persons() -> Json<Vec<Person>> {

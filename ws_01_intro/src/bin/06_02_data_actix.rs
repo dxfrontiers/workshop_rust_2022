@@ -15,10 +15,10 @@ async fn counter(data: web::Data<Counter>) -> String {
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     env_logger::init_from_env(env_logger::Env::new().default_filter_or("info"));
-    let counter_data = web::Data::new(Counter{count: AtomicU32::new(0)});
+    // let counter_data = ;
     HttpServer::new(move || {
         App::new()
-        .app_data(counter_data.clone())
+        .app_data(web::Data::new(Counter{count: AtomicU32::new(0)}))
         .wrap(middleware::Logger::default())
         .service(counter)
     })

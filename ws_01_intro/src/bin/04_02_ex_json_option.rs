@@ -10,7 +10,7 @@ struct Greeting {
 
 
 //curl -X POST -H "Content-Type: application/json" -d @json/greeting.json 127.0.0.1:8080/greeting
-async fn greet(greeting: web::Json<Greeting>) -> String {
+async fn greet_with_length_option(greeting: web::Json<Greeting>) -> String {
     let greeting = greeting.into_inner();
     if /*TODO*/greeting.include_len.unwrap_or(false) {
         let length = get_length_of_name(/*TODO*/&greeting);
@@ -34,7 +34,7 @@ async fn main() -> std::io::Result<()> {
     HttpServer::new(move || {
         App::new()
         .wrap(middleware::Logger::default())
-        .service(web::resource("/greet").route(web::post().to(greet)))
+        .service(web::resource("/greet").route(web::post().to(greet_with_length_option)))
     })
     .bind(("127.0.0.1", 8080))?
     .run()
