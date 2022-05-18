@@ -85,7 +85,7 @@ mod tests {
         ).await;
     }
     async fn test_greet(greeting: Greeting, verifier: fn(String)){
-        let resp = greet(web::Json(greeting)).await;
+        let resp = greet_with_length_option(web::Json(greeting)).await;
         println!("Response: {}", resp );
         verifier(resp)
     } 
