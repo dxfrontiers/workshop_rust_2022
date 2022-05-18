@@ -9,7 +9,7 @@ async fn hello() -> String {
 
 fn main() -> std::io::Result<()> {
     rt::System::new().block_on(
-        HttpServer::new(move || {
+        HttpServer::new(|| {
             App::new()
             .wrap(middleware::Logger::default())
             .route("/hello", web::get().to(hello))
