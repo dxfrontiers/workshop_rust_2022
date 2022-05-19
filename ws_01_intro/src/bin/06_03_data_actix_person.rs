@@ -7,32 +7,6 @@ pub struct PersonDB{
     people: HashMap<u32,Person>
 }
 
-// uses the actix result type
-// #[get("/person/{id}")]
-// async fn get_person_by_id(data: web::Data<PersonDB>, path: web::Path<PathInfo>) -> WebResult<impl Responder>{
-//     data.people
-//         .get(&path.id)    
-//         .ok_or(error::ErrorNotFound(format!("Could not find person with id {}",path.id)))
-//         .map(serde_json::to_string) 
-// }
-
-// uses a hybrid approach
-// #[get("/person/{id}")]
-// async fn get_person_by_id(data: web::Data<PersonDB>, path: web::Path<PathInfo>) -> Option<impl Responder>{
-//     data.people
-//         .get(&path.id)
-//         .map(serde_json::to_string) 
-// }
-
-//uses the explicit type + clone
-// #[get("/person/{id}")]
-// async fn get_person_by_id(data: web::Data<PersonDB>, path: web::Path<PathInfo>) -> Option<Json<Person>>{
-//     data.people
-//         .get(&path.id)
-//         .map(|x| x.clone())
-//         .map(Json)
-// }
-
 #[get("/person/{id}")]
 async fn get_person_by_id(data: web::Data<PersonDB>, path: web::Path<PathInfo>) -> Option<Json<Person>>{
     data.people

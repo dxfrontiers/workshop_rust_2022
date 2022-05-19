@@ -45,7 +45,7 @@ async fn get_person_by_id(data: web::Data<PersonDB>, path: web::Path<PathInfo>) 
 
 #[get("/person/")]
 async fn list_person(data: web::Data<PersonDB> ) -> Json<Vec<Person>> {
-    Json(data.list().await)
+    Json(data.list().await.get(8))
 }
 
 #[post("/person/")]
