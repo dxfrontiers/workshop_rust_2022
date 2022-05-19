@@ -10,7 +10,7 @@ pub type DbPool = r2d2::Pool<ConnectionManager<SqliteConnection>>;
 
 pub async fn insert_person(pool: &DbPool, new_person: NewPerson) -> Result<Person, DbError> {
     use crate::schema::people::dsl::*;
-    let conn = get_conn(&pool).await?;
+    let conn = get_conn(pool).await?;
     web::block(move || {
         diesel::insert_into(people)
             .values(&new_person)
@@ -25,7 +25,7 @@ pub async fn insert_person(pool: &DbPool, new_person: NewPerson) -> Result<Perso
 
 pub async fn get_person_by_id(pool: &DbPool, selected_id: i32) -> Result<Option<Person>, DbError> {
     use crate::schema::people::dsl::*;
-    let conn = get_conn(&pool).await?;
+    let conn = get_conn(pool).await?;
     web::block(move ||      
         people.filter(id.eq(selected_id))        
             .first::<Person>(&conn)
@@ -37,7 +37,7 @@ pub async fn get_person_by_id(pool: &DbPool, selected_id: i32) -> Result<Option<
 
 pub async fn get_person_all(pool: &DbPool) -> Result<Vec<Person>, DbError> {
     use crate::schema::people::dsl::*;
-    let conn = get_conn(&pool).await?;
+    let conn = get_conn(pool).await?;
     web::block(move || people.load::<Person>(&conn))
         .await?
         .map_err(|e| e.into())

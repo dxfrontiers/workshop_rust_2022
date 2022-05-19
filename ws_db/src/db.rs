@@ -21,14 +21,14 @@ async fn get_conn(pool: &Pool) -> Result<PooledConnection<SqliteConnectionManage
 /*
  */
 pub async fn get_person_by_id(pool: &Pool, id: u32) -> Result<Option<Person>, Error> {
-    let conn = get_conn(&pool).await?;
+    let conn = get_conn(pool).await?;
      web::block( move ||get_person_by_id_query(conn, id))
         .await?
         .map_err(error::ErrorInternalServerError)
 }
 
 pub async fn get_person_by_age(pool: &Pool, id: u32) -> Result<Vec<Person>, Error> {
-    let conn = get_conn(&pool).await?;
+    let conn = get_conn(pool).await?;
      web::block( move ||get_persons_by_age_query(conn, id))
         .await?
         .map_err(error::ErrorInternalServerError)
@@ -37,7 +37,7 @@ pub async fn get_person_by_age(pool: &Pool, id: u32) -> Result<Vec<Person>, Erro
 /*
  */
 pub async fn insert_person(pool: &Pool, person: NewPerson) -> Result<Person, Error> {    
-    let conn = get_conn(&pool).await?;
+    let conn = get_conn(pool).await?;
     web::block(move || insert_person_query(conn, person))
     .await?
     .map_err(error::ErrorInternalServerError)
