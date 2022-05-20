@@ -2,7 +2,7 @@
 #[macro_use]
 extern crate diesel;
 
-use actix_web::{post, get, web::{self, Json}, error, App, HttpServer, Error as WebError, Result,  middleware, ResponseError};
+use actix_web::{post, get, web::{self, Json}, error, App, HttpServer, Error as WebError, Result,  middleware};
 
 use diesel::prelude::*;
 use diesel::r2d2::{self, ConnectionManager};
@@ -17,9 +17,10 @@ use crate::db::DbPool;
 #[get("/person/{user_id}")]
 async fn get_person_by_id(db: web::Data<DbPool>, path: web::Path<i32>) -> Result<Option<Json<Person>>, WebError>{
     let id = path.into_inner();   
-    Ok(db::get_person_by_id(&db, id)
-        .await?
-        .map(|p| web::Json(p)))
+    db::get_person_by_id(&db, id)
+        .await
+        .map(|res| res.map(Json))
+        .map_err(error::ErrorInternalServerError)
 }
 #[get("/person")]
 async fn get_person_all(db: web::Data<DbPool>) -> Result<Json<Vec<Person>>, WebError>{
@@ -34,7 +35,7 @@ async fn get_person_all(db: web::Data<DbPool>) -> Result<Json<Vec<Person>>, WebE
 async fn post_person(db: web::Data<DbPool>, person: web::Json<NewPerson>) ->  Result<Json<Person>, WebError> {    
     db::insert_person(&db, person.into_inner())
         .await
-        .map(|p| web::Json(p))
+        .map(web::Json)
         .map_err(error::ErrorInternalServerError)
 }
 

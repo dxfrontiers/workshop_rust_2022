@@ -1,8 +1,8 @@
 
-use actix_web::{post, get, web::{self, Json}, App, HttpServer, Error as WebError, Result, Responder, middleware, HttpResponse};
+use actix_web::{post, get, web::{self, Json}, App, HttpServer, Error as WebError, Result, middleware};
 
 use r2d2_sqlite::SqliteConnectionManager;
-use serde::{Deserialize, Serialize};
+use serde::{Deserialize};
 
 mod model;
 mod db;
@@ -20,24 +20,23 @@ struct PersonQuery{
 #[get("/person/{user_id}")]
 async fn get_person_by_id(db: web::Data<Pool>, path: web::Path<u32>) -> Result<Option<Json<Person>>, WebError>{
     let id = path.into_inner();    
-    let result = db::get_person_by_id(&db, id)
-        .await?
-        .map(|p| web::Json(p));
-    Ok(result)
+    db::get_person_by_id(&db, id)
+        .await
+        .map(|res| res.map(Json))
 }
 
 #[post("/person")]
 async fn post_person(db: web::Data<Pool>, person: web::Json<NewPerson>) ->  Result<Json<Person>, WebError> {    
     db::insert_person(&db, person.into_inner())
         .await
-        .map(|p| web::Json(p))
+        .map(web::Json)
 }
 
 #[get("/person")]
 async fn get_person_query(db: web::Data<Pool>, query: web::Query<PersonQuery>) ->  Result<Json<Vec<Person>>, WebError> {    
     db::get_person_by_age(&db, query.age)
         .await
-        .map(|p| web::Json(p))
+        .map(web::Json)
 }
 
 #[actix_web::main]
