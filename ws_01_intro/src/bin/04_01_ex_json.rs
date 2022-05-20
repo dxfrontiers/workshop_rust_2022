@@ -8,20 +8,17 @@ struct Greeting {
 }
 
 async fn greet_upper_case(greeting: web::Json<Greeting>) -> String {
-    format!("Greetings, {}!", greeting.firstname.to_uppercase())
+    format!("Greetings, {}!", /* TODO */)
 }
 
 async fn greet_with_length(greeting: web::Json<Greeting>) -> String {
     let greeting = greeting.into_inner();
-    let length = get_length_of_name(/*TODO*/&greeting);
+    let length = get_length_of_name(/*TODO*/);
     format!("Greetings, {} {}!, your name has {} chars.", greeting.firstname, greeting.lastname, length)
 }
 
 
-fn get_length_of_name(/*TODO*/greeting: &Greeting) -> usize{
-    // greeting.firstname.chars().count() + greeting.lastname.chars().count()
-    // greeting.firstname.len() + greeting.lastname.len()
-    // TODO
+fn get_length_of_name(/*TODO*/) -> /*TODO*/{
     todo!()
 }
 

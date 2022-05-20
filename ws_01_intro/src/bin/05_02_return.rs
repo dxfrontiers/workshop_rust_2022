@@ -9,6 +9,12 @@ pub struct Person {
     pub age: u32,
 }
 
+#[derive( Deserialize)]
+struct PathInfo{
+    id: u32
+}
+
+
 #[get("/v1/person/bond")]
 async fn get_person_by_id_01() -> Json<Person> {
     let person = Person{
@@ -19,10 +25,7 @@ async fn get_person_by_id_01() -> Json<Person> {
     };
     Json(person)
 }
-#[derive( Deserialize)]
-struct PathInfo{
-    id: u32
-}
+
 
 #[get("/v2/person/{id}")]
 async fn get_person_by_id_02( path: web::Path<PathInfo>) -> Json<Person> {
@@ -73,11 +76,17 @@ async fn get_person_by_id_06(path: web::Path<PathInfo>) -> WebResult<impl Respon
         .map(serde_json::to_string)        
 }
 
+
+
+
 // TODO: aufgabe
 #[get("/person/")]
 async fn get_persons() -> Json<Vec<Person>> {
     Json(people())
 }
+
+
+
 
 
 #[actix_web::main]
@@ -98,6 +107,9 @@ async fn main() -> std::io::Result<()> {
     .run()
     .await
 }
+
+
+
 
 // TODO Erklärung
 fn people()-> Vec<Person> {

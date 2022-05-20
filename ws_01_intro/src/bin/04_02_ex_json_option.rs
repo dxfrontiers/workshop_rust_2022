@@ -12,19 +12,10 @@ struct Greeting {
 //curl -X POST -H "Content-Type: application/json" -d @json/greeting.json 127.0.0.1:8080/greeting
 async fn greet_with_length_option(greeting: web::Json<Greeting>) -> String {
     let greeting = greeting.into_inner();
-    if /*TODO*/greeting.include_len.unwrap_or(false) {
-        let length = get_length_of_name(/*TODO*/&greeting);
-        format!("Greetings, {} {}!, your name has {} chars.", greeting.firstname, greeting.lastname, length)
-    }
-    else{
-        format!("Greetings, {} {}!", greeting.firstname, greeting.lastname)
-    }
+    /* TODO */
 }
 
-fn get_length_of_name(/*TODO*/greeting: &Greeting) -> usize{
-    // greeting.firstname.chars().count() + greeting.lastname.chars().count()
-    // greeting.firstname.len() + greeting.lastname.len()
-    // TODO
+fn get_length_of_name(/*TODO*/) -> /* TODO */{
     todo!()
 }
 

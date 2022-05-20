@@ -11,13 +11,7 @@ pub struct Person {
 
 #[get("/bond/")]
 async fn get_mr_bond() -> Json<Person> {
-    let person = Person{
-        id: 007,
-        last_name: "Bond".to_string(),
-        first_name: "James".to_string(),
-        age: 30,
-    };
-    Json(person)
+    todo!()
 }
 
 

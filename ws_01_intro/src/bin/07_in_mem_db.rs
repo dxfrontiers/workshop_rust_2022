@@ -24,39 +24,38 @@ struct PersonDB{
 }
 
 impl PersonDB{
-    async fn insert(&self, person: Person) -> Option<Person>{
-        self.store.lock().await.insert(person.id, person).map(|p|p.clone())
+    async fn insert(&self, person: Person) -> /* TODO */ {
+        todo!("insert person in db")
     }
-    async fn get(&self, id: u32) -> Option<Person>{
-        self.store.lock().await.get(&id).map(|p|p.clone())
+    async fn get(&self, id: u32) -> /* TODO */ {
+        todo!("get one person from db")
     }
-    async fn list(&self) -> Vec<Person>{
-        self.store.lock().await.values().map(|p|p.clone()).collect()
+    async fn list(&self) -> /* TODO */{
+        todo!("list all person from db")
     }
-    async fn delete(&self, id: u32) -> Option<Person>{
-        self.store.lock().await.remove(&id).map(|p|p.clone())
+    async fn delete(&self, id: u32) -> /* TODO */{
+        todo!("delete person from db")
     }
 }
 
 #[get("/person/{id}")]
 async fn get_person_by_id(data: web::Data<PersonDB>, path: web::Path<PathInfo>) -> Option<Json<Person>> {
-    data.get(path.id).await.map(Json)
+    todo!("insert person")
 }
 
 #[get("/person/")]
 async fn list_person(data: web::Data<PersonDB> ) -> Json<Vec<Person>> {
-    Json(data.list().await)
+    todo!("get one person")
 }
 
 #[post("/person/")]
 async fn post_person(data: web::Data<PersonDB>, person: web::Json<Person>) -> HttpResponse {
-    data.insert(person.into_inner()).await.map(Json);
-    HttpResponse::Created().finish()
+    todo!("list all person")
 }
 
 #[delete("/person/{id}")]
 async fn delete_person(data: web::Data<PersonDB>, path: web::Path<PathInfo>) -> Option<Json<Person>> {
-    data.delete(path.id).await.map(Json)
+    todo!("delete person")
 }
 
 
